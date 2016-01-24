@@ -3,12 +3,13 @@ package com.lixuan.weixin.service.impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import com.lixuan.weixin.model.message.resp.BaseMessage;
-import com.lixuan.weixin.model.message.resp.MediaMessage;
-import com.lixuan.weixin.model.message.resp.MusicMessage;
-import com.lixuan.weixin.model.message.resp.NewsMessage;
-import com.lixuan.weixin.model.message.resp.TextMessage;
-import com.lixuan.weixin.model.message.resp.VideoMessage;
+
+import com.lixuan.weixin.model.RespBaseMessage;
+import com.lixuan.weixin.model.RespMediaMessage;
+import com.lixuan.weixin.model.RespMusicMessage;
+import com.lixuan.weixin.model.RespNewsMessage;
+import com.lixuan.weixin.model.RespTextMessage;
+import com.lixuan.weixin.model.RespVideoMessage;
 import com.lixuan.weixin.util.ConstantUtil;
 import com.lixuan.weixin.util.MessageUtil;
 
@@ -20,16 +21,16 @@ import com.lixuan.weixin.util.MessageUtil;
  */
 public class MessageService {
 
-	public static Map<String, BaseMessage> bulidMessageMap = new HashMap<String, BaseMessage>();
+	public static Map<String, RespBaseMessage> bulidMessageMap = new HashMap<String, RespBaseMessage>();
 	
 	static 
 	{
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_TEXT, new TextMessage());
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_NEWS, new NewsMessage());
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_IMAGE, new MusicMessage());
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VOICE, new MediaMessage());
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VIDEO, new VideoMessage());
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_MUSIC, new MusicMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_TEXT, new RespTextMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_NEWS, new RespNewsMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_IMAGE, new RespMusicMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VOICE, new RespMediaMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VIDEO, new RespVideoMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_MUSIC, new RespMusicMessage());
 	}
 	
 	/**
@@ -48,7 +49,7 @@ public class MessageService {
 		// 公众帐号
 		String toUserName = requestMap.get("ToUserName");
 
-		BaseMessage message = bulidMessageMap.get(msgType);
+		RespBaseMessage message = bulidMessageMap.get(msgType);
 		message.setToUserName(fromUserName);
 		message.setFromUserName(toUserName);
 		message.setCreateTime(new Date().getTime());
@@ -73,7 +74,7 @@ public class MessageService {
 		// 图文消息处理
 		if (msgType == ConstantUtil.RESP_MESSAGE_TYPE_NEWS) 
 		{
-			responseMessage = MessageUtil.newsMessageToXml((NewsMessage) obj);
+			responseMessage = MessageUtil.newsMessageToXml((RespNewsMessage) obj);
 		} 
 		else 
 		{// 其他消息处理

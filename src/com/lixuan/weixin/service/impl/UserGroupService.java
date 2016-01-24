@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import com.lixuan.weixin.model.user.UserGroup;
+import com.lixuan.weixin.model.UserGroup;
 import com.lixuan.weixin.util.StringUtil;
 import com.lixuan.weixin.util.WeixinUtil;
 

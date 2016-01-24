@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
-import com.lixuan.weixin.model.message.resp.TextMessage;
+import com.lixuan.weixin.model.RespTextMessage;
 import com.lixuan.weixin.util.ConstantUtil;
 import com.lixuan.weixin.util.MessageUtil;
 
@@ -51,7 +51,7 @@ public class CoreService
 			 String msgType = requestMap.get("MsgType"); 
 		
 			 // 回复文本消息
-			 TextMessage textMessage = new TextMessage();
+			 RespTextMessage textMessage = new RespTextMessage();
 			 textMessage.setToUserName(fromUserName); 
 		     textMessage.setFromUserName(toUserName); 
 		
@@ -62,7 +62,7 @@ public class CoreService
 			 // 文本消息
 			 if (msgType.equals(ConstantUtil.REQ_MESSAGE_TYPE_TEXT))
 			 {
-				 respContent = "欢迎光临Eplus平台！-----From 503 all members";
+				 respContent = "欢迎光临Eplus！-----From 503 all members";
 			 } 
 		
 			 // 图片消息 
@@ -97,7 +97,7 @@ public class CoreService
 				 //订阅 
 				if (eventType.equals(ConstantUtil.EVENT_TYPE_SUBSCRIBE)) 
 				{
-					 respContent = "欢迎光临Eplus!   谢谢您的关注!";
+					respContent = "欢迎关注Eplus! 谢谢您的关注! --From 503 all members";
 				} 
 			
 				 // 取消订阅 

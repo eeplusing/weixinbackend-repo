@@ -12,9 +12,9 @@ import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.lixuan.weixin.model.message.resp.Article;
-import com.lixuan.weixin.model.message.resp.NewsMessage;
-import com.lixuan.weixin.model.message.resp.TextMessage;
+import com.lixuan.weixin.model.Article;
+import com.lixuan.weixin.model.RespNewsMessage;
+import com.lixuan.weixin.model.RespTextMessage;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.core.util.QuickWriter;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
@@ -83,7 +83,7 @@ public class MessageUtil
 	 * @param textMessage 文本消息对象
 	 * @return xml
 	 */
-	public static String textMessageToXml(TextMessage textMessage) 
+	public static String textMessageToXml(RespTextMessage textMessage) 
 	{
 		xstream.alias("xml", textMessage.getClass());
 		return xstream.toXML(textMessage);
@@ -94,7 +94,7 @@ public class MessageUtil
 	 * @param newsMessage 图文消息对象
 	 * @return xml
 	 */
-	public static String newsMessageToXml(NewsMessage newsMessage) 
+	public static String newsMessageToXml(RespNewsMessage newsMessage) 
 	{
 		xstream.alias("xml", newsMessage.getClass());
 		xstream.alias("item", new Article().getClass());

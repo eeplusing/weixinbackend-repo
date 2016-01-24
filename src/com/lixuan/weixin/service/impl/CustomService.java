@@ -4,15 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
-
 import org.apache.log4j.Logger;
-
-import com.lixuan.weixin.customer.CustomerBaseMessage;
-import com.lixuan.weixin.customer.MediaMessage;
-import com.lixuan.weixin.customer.MusicMessage;
-import com.lixuan.weixin.customer.NewsMessage;
-import com.lixuan.weixin.customer.TextMessage;
-import com.lixuan.weixin.customer.VideoMessage;
+import com.lixuan.weixin.model.RespBaseMessage;
+import com.lixuan.weixin.model.RespMediaMessage;
+import com.lixuan.weixin.model.RespMusicMessage;
+import com.lixuan.weixin.model.RespNewsMessage;
+import com.lixuan.weixin.model.RespTextMessage;
+import com.lixuan.weixin.model.RespVideoMessage;
 import com.lixuan.weixin.util.ConstantUtil;
 import com.lixuan.weixin.util.StringUtil;
 import com.lixuan.weixin.util.WeixinUtil;
@@ -29,27 +27,27 @@ public class CustomService {
 
 	private static String CUSTOME_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=ACCESS_TOKEN";
 
-	public static Map<String, CustomerBaseMessage> bulidMessageMap = new HashMap<String, CustomerBaseMessage>();
+	public static Map<String, RespBaseMessage> bulidMessageMap = new HashMap<String, RespBaseMessage>();
 	
 	static 
 	{
 		//回复文本
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_TEXT, new TextMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_TEXT, new RespTextMessage());
 		
 		//回复新闻消息
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_NEWS, new NewsMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_NEWS, new RespNewsMessage());
 		
 		//回复图片
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_IMAGE, new MediaMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_IMAGE, new RespMediaMessage());
 		
 		//回复语音
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VOICE, new MediaMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VOICE, new RespMediaMessage());
 		
 		//回复视频
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VIDEO, new VideoMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_VIDEO, new RespVideoMessage());
 		
 		//回复音乐
-		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_MUSIC, new MusicMessage());
+		bulidMessageMap.put(ConstantUtil.RESP_MESSAGE_TYPE_MUSIC, new RespMusicMessage());
 	}
 	
 	/**
@@ -84,9 +82,9 @@ public class CustomService {
 	 */
 	public static Object bulidCustomerBaseMessage(String toUser, String msgType) 
 	{
-		CustomerBaseMessage message = bulidMessageMap.get(msgType);
-		message.setTouser(toUser);
-		message.setMsgtype(msgType);
+		RespBaseMessage message = bulidMessageMap.get(msgType);
+		message.setToUserName(toUser);
+		message.setMsgType(msgType);
 		return message;
 	}
 

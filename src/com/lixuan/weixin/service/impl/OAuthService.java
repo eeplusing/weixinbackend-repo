@@ -5,7 +5,7 @@ import java.net.URLEncoder;
 import org.apache.log4j.Logger;
 import net.sf.json.JSONObject;
 import com.lixuan.weixin.model.AccessTokenOAuth;
-import com.lixuan.weixin.model.user.UserWeiXin;
+import com.lixuan.weixin.model.UserWeiXin;
 import com.lixuan.weixin.util.ConstantUtil;
 import com.lixuan.weixin.util.StringUtil;
 import com.lixuan.weixin.util.WeixinUtil;

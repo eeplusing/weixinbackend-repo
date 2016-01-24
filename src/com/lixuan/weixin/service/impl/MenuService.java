@@ -1,11 +1,9 @@
 package com.lixuan.weixin.service.impl;
 
 import org.apache.log4j.Logger;
-
-import com.lixuan.weixin.model.menu.Button;
-import com.lixuan.weixin.model.menu.Menu;
+import com.lixuan.weixin.model.Button;
+import com.lixuan.weixin.model.Menu;
 import com.lixuan.weixin.util.WeixinUtil;
-
 import net.sf.json.JSONObject;
 
 /**

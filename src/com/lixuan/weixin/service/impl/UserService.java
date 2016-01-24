@@ -3,10 +3,9 @@ package com.lixuan.weixin.service.impl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 
-import com.lixuan.weixin.model.user.UserWeiXin;
+import com.lixuan.weixin.model.UserWeiXin;
 import com.lixuan.weixin.util.DateFormart;
 import com.lixuan.weixin.util.StringUtil;
 import com.lixuan.weixin.util.WeixinUtil;
@@ -41,9 +40,7 @@ public class UserService {
 	 */
 	public static UserWeiXin getUserInfo(String openid) {
 		String token = WeixinUtil.getToken();
-
 		UserWeiXin user = null;
-
 		if (token != null) {
 			String url = GET_USER_INFO.replace("ACCESS_TOKEN", token).replace(
 					"OPENID", openid);
