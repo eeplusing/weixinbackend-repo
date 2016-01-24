@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+	
+	 <!-- 启动注解扫描 会扫描指定包及其子包下的所有bean -->
+     <context:component-scan base-package="com.lixuan.weixin">
+     	<context:exclude-filter type="annotation" 
+     		expression="org.springframework.stereotype.Controller"/>
+     	<context:exclude-filter type="annotation" 
+     		expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+     </context:component-scan>
+   
+     <!-- 加载数据源配置信息：jdbc.properties: -->
+     <context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	 <!-- 配置数据源 -->
+     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClass}"/>
+		<property name="jdbcUrl" value="${jdbc.url}"/>
+		<property name="user" value="${jdbc.username}"/>
+		<property name="password" value="${jdbc.password}"/>
+		
+		<!--初始化时获取的连接数，取值应在minPoolSize与maxPoolSize之间。Default: 10 -->
+		<property name="initialPoolSize" value="${c3p0.pool.max.init}"/>
+		
+		<!--连接池中保留的最大连接数。Default: 15 -->
+		<property name="maxPoolSize" value="${c3p0.pool.max.size}"/>
+		
+		<!--连接池中保留的最小连接数。-->
+		<property name="minPoolSize" value="${c3p0.pool.min.size}"/>
+		
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 5 -->
+		<property name="acquireIncrement" value="${c3p0.pool.max.increment}"/>
+		
+		<!--最大空闲时间,60秒内未使用则连接被丢弃。若为0则永不丢弃。Default: 0 -->
+		<property name="maxIdleTime" value="${c3p0.pool.max.idleTime}"/>
+		
+		<!--每60秒检查所有连接池中的空闲连接。Default: 0 -->
+		<property name="idleConnectionTestPeriod" value="${c3p0.pool.idleConnection.testPeriod}"/>
+   	</bean>
+   	
+   	<bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    </bean>
+   	
+   	<!-- 配置hibernate事务管理器 :用来在service层面上实现事务管理，达到平台无关性-->
+    <bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    	<!-- 注入会话工厂 -->
+   	    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!--配置事务 事务细节 ：事务的传播特性 -->
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+       <tx:attributes>
+           <!-- 写操作 -->
+			<!-- propagation:事务传播， isolation:事务隔离级别 -->
+			<tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT"/>
+			<tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT"/>
+			<tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT"/>
+			<tx:method name="batch*" propagation="REQUIRED" isolation="DEFAULT"/>
+			<!-- 读操作 -->
+			<tx:method name="load*" propagation="SUPPORTS"  read-only="true" isolation="DEFAULT"/>
+			<tx:method name="get*" propagation="SUPPORTS"  read-only="true" isolation="DEFAULT"/>
+			<!-- 防止未按命名规则 -->
+			<tx:method name="*"/>
+       </tx:attributes>
+    </tx:advice>
+    
+    <tx:annotation-driven transaction-manager="txManager"/>
+	   
+    <!-- aop切入点配置 -->
+	<!--
+	 pointcut: 
+	 		   第一个  “*”：返回值不限；
+	 		   第二个 “*.”：任何包，及任何包的子包；
+	 		   第二个  “.”：包和类的风格不限；
+	 		   第一个  “*Service”：以Service结尾的类或接口；
+	 		 “.*”:任何方法；
+	 		 “..”:参数不限；
+	 -->
+   	<aop:config proxy-target-class="false">
+		<aop:advisor advice-ref="txAdvice" pointcut="execution(* *..*Service .*(..))"/>
+	</aop:config>
+</beans>

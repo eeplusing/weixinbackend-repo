@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="com.lixuan.weixin.model">
+
+	<class name="Account" table="weixin_account_info">
+		<id name="accountId" column="account_id">
+			<generator class="native" />
+		</id>
+		<property name="accountNo" column="account_no"/>
+		<property name="accountPass" column="accont_pass"/>
+	</class>
+
+</hibernate-mapping>
